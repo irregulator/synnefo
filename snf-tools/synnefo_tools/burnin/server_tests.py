@@ -222,7 +222,14 @@ class GeneratedServerTestSuite(CycladesTests):
         # The hostname must be of the form 'prefix-id'
         self.assertTrue(hostname.endswith("-%d" % self.server['id']))
 
-    def test_018_ssh_to_server_ipv6(self):
+    def test_018a_server_ping_ipv6(self):
+        """Test server responds to ping6 after reboot"""
+        self._skip_if(not self._image_is(self.use_image, "linux"),
+                      "only valid for Linux servers")
+        self._skip_if(not self.use_ipv6, "--no-ipv6 flag enabled")
+        self._insist_on_ping(self.ipv6[0], version=6)
+
+    def test_018b_ssh_to_server_ipv6(self):
         """Test SSH to server public IPv6 works, verify hostname"""
         self._skip_if(not self._image_is(self.use_image, "linux"),
                       "only valid for Linux servers")
